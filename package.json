@@ -1,0 +1,20 @@
+{
+  "name": "sync-gitlab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "download": "node ./index.js",
+    "download:workers": "node ./index.js --workers"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "fs-extra": "^10.0.0",
+    "minimist": "^1.2.5",
+    "simple-git": "^2.47.1",
+    "workerpool": "^6.1.5",
+    "zip-dir": "^2.0.0"
+  }
+}
