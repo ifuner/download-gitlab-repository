@@ -25,3 +25,7 @@
  # Multi-threaded download
  npm run download:wokers
 ```
+
+# TODO
+
+- [ ] worker Count limit 线程数量控制
