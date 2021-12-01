@@ -16,12 +16,13 @@ const download = async function (data = {}, options = {}) {
         await git.clone(ssh_url_to_repo, proPath)
     }
 
-    const git2 = simpleGit({
+    let git2 = simpleGit({
         baseDir: proPath
     });
 
     let branchs = await git2.branch(['-a'])
-    for (let i = 0; i < branchs.length; i++) {
+    branchs = branchs.all
+    for (let i = 0; i < branchs.all.length; i++) {
         const item = branchs[i] || {}
         const remote = "remotes"
         if (item.indexOf(remote) !== -1) {
@@ -31,7 +32,7 @@ const download = async function (data = {}, options = {}) {
     }
     await git2.fetch(['--all'])
     await git2.pull(['--all'])
-    git = null
+    git2 = null
     return data
 }
 

@@ -22,6 +22,7 @@ module.exports = async function (data = {}) {
     });
 
     let branchs = await git2.branch(['-a'])
+    branchs = branchs.all
     for (let i = 0; i < branchs.length; i++) {
         const item = branchs[i] || {}
         const remote = "remotes"
