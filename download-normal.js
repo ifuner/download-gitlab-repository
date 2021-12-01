@@ -3,8 +3,8 @@ const path = require('path')
 const simpleGit = require('simple-git');
 const CONFIG = require("./config");
 const git = simpleGit()
-const {DEFAULT_DIR, cwd} = CONFIG
-
+const GitUrlParse = require("git-url-parse");
+const {cwd, DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
 module.exports = async function (data = {}) {
 
     let {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data
@@ -13,8 +13,16 @@ module.exports = async function (data = {}) {
 
     if (!await fs.pathExists(proPath)) {
         await fs.ensureDir(proPath)
-        // clone 代码
-        await git.clone(ssh_url_to_repo, proPath)
+        let remoteUrl = ssh_url_to_repo
+        if (!/^(HTTPS|SSH)/.test(GITLAB_CLONE_MODE)) {
+            console.log("clone 方式不在定义范围内")
+            return
+        }
+        if (GITLAB_CLONE_MODE === "HTTPS") {
+            const {protocol, resource, pathname} = GitUrlParse(http_url_to_repo)
+            remoteUrl = `${protocol}://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@${resource}${pathname}`
+        }
+        await git.clone(remoteUrl, proPath)
     }
 
     const git2 = simpleGit({

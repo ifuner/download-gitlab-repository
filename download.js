@@ -2,18 +2,29 @@ const simpleGit = require('simple-git');
 const fs = require('fs-extra')
 const path = require('path')
 const workerpool = require('workerpool');
+const GitUrlParse = require("git-url-parse");
+const CONFIG = require("./config")
 
-const download = async function (data = {}, options = {}) {
+const {cwd, DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+const download = async function (data = {}) {
     const {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data || {}
-    const {cwd, DEFAULT_DIR} = options || {}
     let git = simpleGit();
     // 创建文件夹
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
     if (!await fs.pathExists(proPath)) {
         await fs.ensureDir(proPath)
+        let remoteUrl = ssh_url_to_repo
+        if (!/^(HTTPS|SSH)/.test(GITLAB_CLONE_MODE)) {
+            console.log("clone 值不在定义范围内")
+            return
+        }
+        if (GITLAB_CLONE_MODE === "HTTPS") {
+            const {protocol, resource, pathname} = GitUrlParse(http_url_to_repo)
+            remoteUrl = `${protocol}://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@${resource}${pathname}`
+        }
         // clone 代码
-        await git.clone(ssh_url_to_repo, proPath)
+        await git.clone(remoteUrl, proPath)
     }
 
     let git2 = simpleGit({
@@ -22,7 +33,7 @@ const download = async function (data = {}, options = {}) {
 
     let branchs = await git2.branch(['-a'])
     branchs = branchs.all
-    for (let i = 0; i < branchs.all.length; i++) {
+    for (let i = 0; i < branchs.length; i++) {
         const item = branchs[i] || {}
         const remote = "remotes"
         if (item.indexOf(remote) !== -1) {
@@ -36,6 +47,11 @@ const download = async function (data = {}, options = {}) {
     return data
 }
 
+
 workerpool.worker({
-    asyncDownload: download
+    asyncDownload: async (data) => {
+        return await Promise.all(
+            data.map(item => download(item))
+        )
+    }
 });

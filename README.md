@@ -28,4 +28,4 @@
 
 # TODO
 
-- [ ] worker Count limit 线程数量控制
+-[x] worker Count limit 线程数量控制

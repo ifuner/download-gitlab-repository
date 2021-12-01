@@ -5,9 +5,10 @@ const zip = require("./zip")
 const gitlab = require("./gitlab")
 const downloadNormal = require("./download-normal")
 const fs = require("fs-extra")
+const array = require('lodash/array');
 // 配置项开始
 const CONFIG = require("./config")
-const {needCompression, DEFAULT_DIR, cwd, CLEAR_MODE} = CONFIG
+const {needCompression, DEFAULT_DIR, cwd, CLEAR_MODE, WORKERS_COUNTS} = CONFIG
 // 配置项结束
 
 const WORK_TASK = function (data, pool) {
@@ -51,10 +52,12 @@ const INIT = async function () {
     if (args.workers) {
         // worker 模式执行方式
         console.log(`开始以多线程模式执行任务...`)
+        let chunkSize = parseInt(ALL_PRO.length / WORKERS_COUNTS)
+        let chunkArr = array.chunk(ALL_PRO, ALL_PRO.length <= WORKERS_COUNTS ? ALL_PRO.length : chunkSize)
         const pool = workerpool.pool("./download.js");
-        await Promise.all(
-            ALL_PRO.map(item => WORK_TASK(item, pool))
-        )
+        for (let i = 0; i < chunkArr.length; i++) {
+            await WORK_TASK(chunkArr[i], pool)
+        }
         pool.terminate();
         console.log(`多线程任务执行完成...`)
     } else {

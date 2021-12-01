@@ -1,6 +1,6 @@
 {
   "name": "sync-gitlab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,8 @@
   "dependencies": {
     "axios": "^0.24.0",
     "fs-extra": "^10.0.0",
+    "git-url-parse": "^11.6.0",
+    "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "simple-git": "^2.47.1",
     "workerpool": "^6.1.5",
