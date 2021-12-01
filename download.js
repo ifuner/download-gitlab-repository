@@ -9,10 +9,11 @@ const {cwd, DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = 
 const download = async function (data = {}) {
     const {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data || {}
     let git = simpleGit();
-    // 创建文件夹
+
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
     if (!await fs.pathExists(proPath)) {
+        // 创建文件夹
         await fs.ensureDir(proPath)
         let remoteUrl = ssh_url_to_repo
         if (!/^(HTTPS|SSH)/.test(GITLAB_CLONE_MODE)) {

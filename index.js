@@ -31,7 +31,6 @@ const WORK_TASK = function (data, pool) {
 const INIT = async function () {
     console.time("执行时间")
     if (CLEAR_MODE) {
-
         const REMOVE_DIR = path.join(cwd, DEFAULT_DIR)
         console.log(`开始清空 ${REMOVE_DIR}`)
         if (await fs.pathExists(REMOVE_DIR)) await fs.remove(REMOVE_DIR)
@@ -40,8 +39,6 @@ const INIT = async function () {
     // 获取仓库
     console.log(`开始获取gitlab的仓库列表`)
     let ALL_PRO = await gitlab() || []
-    // console.log("ALL_PRO", ALL_PRO.length);
-    // return
     if (!(ALL_PRO && ALL_PRO.length)) {
         console.log("仓库列表为空")
         console.timeEnd("执行时间")
@@ -50,7 +47,7 @@ const INIT = async function () {
 
     console.log(`获取到${ALL_PRO.length}条仓库列表数据`)
     if (args.workers) {
-        // worker 模式执行方式
+        // worker 模式执行
         console.log(`开始以多线程模式执行任务...`)
         let chunkSize = parseInt(ALL_PRO.length / WORKERS_COUNTS)
         let chunkArr = array.chunk(ALL_PRO, ALL_PRO.length <= WORKERS_COUNTS ? ALL_PRO.length : chunkSize)
