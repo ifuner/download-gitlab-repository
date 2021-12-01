@@ -3,7 +3,9 @@
 > 使用前请先配置 ./config.js 文件
 
 ```bash
-# 单线程下载
+ npm install
+ 
+  # 单线程下载
  npm run download
  
  # 多线程下载
@@ -15,6 +17,8 @@
 > Please configure the ./config.js file before use
 
 ```bash
+ npm install
+ 
 # Single thread download
  npm run download
  
