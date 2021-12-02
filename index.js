@@ -6,10 +6,10 @@ const gitlab = require("./gitlab")
 const downloadNormal = require("./download-normal")
 const fs = require("fs-extra")
 const array = require('lodash/array');
-// 配置项开始
+
 const CONFIG = require("./config")
-const {needCompression, DEFAULT_DIR, cwd, CLEAR_MODE, WORKERS_COUNTS} = CONFIG
-// 配置项结束
+const {NEED_COMPRESSION, DEFAULT_DIR, CLEAR_MODE, WORKERS_COUNTS} = CONFIG
+const cwd = process.cwd()
 
 const WORK_TASK = function (data, pool) {
     return new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ const INIT = async function () {
     }
 
     // 结束后执行压缩
-    if (needCompression) {
+    if (NEED_COMPRESSION) {
         console.log(`开始执行压缩...`)
         await zip()
         console.log(`压缩任务完成...`)

@@ -12,7 +12,7 @@ module.exports = {
     // 必填项结束
 
     WORKERS_COUNTS: 4, // 线程数量
-    needCompression: false, // 下载完成后是否需要压缩
-    cwd: process.cwd(),
+    NEED_COMPRESSION: false, // 下载完成后是否需要压缩
+
     CLEAR_MODE: true, // 是否每次执行都清除原先的文件
 }

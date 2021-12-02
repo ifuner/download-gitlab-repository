@@ -5,7 +5,8 @@ const workerpool = require('workerpool');
 const GitUrlParse = require("git-url-parse");
 const CONFIG = require("./config")
 
-const {cwd, DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+const { DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+const cwd = process.cwd()
 const download = async function (data = {}) {
     const {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data || {}
     let git = simpleGit();

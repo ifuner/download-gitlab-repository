@@ -1,10 +1,13 @@
 const fs = require('fs-extra')
 const path = require('path')
 const simpleGit = require('simple-git');
+const GitUrlParse = require("git-url-parse");
+
 const CONFIG = require("./config");
 const git = simpleGit()
-const GitUrlParse = require("git-url-parse");
-const {cwd, DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+
+const {DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+const cwd = process.cwd()
 module.exports = async function (data = {}) {
 
     let {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data
