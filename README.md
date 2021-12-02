@@ -1,4 +1,4 @@
-# 下载公司内网gitlab所有仓库
+# 全量下载gitlab所有仓库（多线程，支持https/ssh方式下载仓库，下载远程所有tag和branch）
 
 > 使用前请先配置 ./config.js 文件
 
@@ -12,7 +12,7 @@
  npm run download:wokers
 ```
 
-# Download all warehouses of the company's intranet gitlab
+# Full download of all gitlab repositories (multi-threaded, support https/ssh to download repositories, download all remote tags and branches)
 
 > Please configure the ./config.js file before use
 
@@ -26,6 +26,3 @@
  npm run download:wokers
 ```
 
-# TODO
-
--[x] worker Count limit 线程数量控制
