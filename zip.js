@@ -1,5 +1,6 @@
 const zipdir = require('zip-dir');
 const CONFIG = require("./config");
+const path = require("path")
 const {DEFAULT_DIR} = CONFIG
 const cwd = process.cwd()
 
@@ -8,7 +9,7 @@ module.exports = async function () {
         const DIR_PATH = path.join(cwd, DEFAULT_DIR)
         zipdir(DIR_PATH, {
             saveTo: `${DIR_PATH}.zip`,
-            filter: (path, stat) => !/\.zip$/.test(path) && !/(node_modules|.idea)/.test(path)
+            filter: (paths, stat) => !/\.zip$/.test(paths) && !/(node_modules|.idea)/.test(paths)
         }, function (err) {
             if (err) {
                 reject(err)
