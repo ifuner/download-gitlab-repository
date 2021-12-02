@@ -1,10 +1,10 @@
 const axios = require("axios")
 const CONFIG = require("./config")
 
-const {GITLAB_TOKEN, GITLAB_URL, API_VERSION} = CONFIG
+const {GITLAB_TOKEN, GITLAB_URL, GITLAB_API_VERSION} = CONFIG
 
 //业务请求配置开始
-axios.defaults.baseURL = GITLAB_URL + API_VERSION
+axios.defaults.baseURL = GITLAB_URL + GITLAB_API_VERSION
 axios.defaults.headers.common['PRIVATE-TOKEN'] = GITLAB_TOKEN
 //业务请求配置结束
 

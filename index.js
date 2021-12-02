@@ -18,7 +18,6 @@ const WORK_TASK = function (data, pool) {
                 return worker.asyncDownload(data, {cwd, DEFAULT_DIR});
             })
             .then(function (result) {
-                // console.log(result);
                 resolve(result)
             })
             .catch(function (err) {
