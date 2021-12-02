@@ -13,6 +13,10 @@ const download = async function (data = {}) {
 
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
+    let git2 = simpleGit({
+        baseDir: proPath
+    });
+
     if (!await fs.pathExists(proPath)) {
         // 创建文件夹
         await fs.ensureDir(proPath)
@@ -27,25 +31,23 @@ const download = async function (data = {}) {
         }
         // clone 代码
         await git.clone(remoteUrl, proPath)
-    }
 
-    let git2 = simpleGit({
-        baseDir: proPath
-    });
-
-    let branchs = await git2.branch(['-a'])
-    branchs = branchs.all
-    for (let i = 0; i < branchs.length; i++) {
-        const item = branchs[i] || {}
-        const remote = "remotes"
-        if (item.indexOf(remote) !== -1) {
-            let remoteOrigin = item.replace(remote + "/", "")
-            await git2.branch(['--track', remoteOrigin])
+        let branchs = await git2.branch(['-a'])
+        branchs = branchs.all
+        for (let i = 0; i < branchs.length; i++) {
+            const item = branchs[i] || {}
+            const remote = "remotes"
+            if (item.indexOf(remote) !== -1) {
+                let remoteOrigin = item.replace(remote + "/", "")
+                await git2.branch(['--track', remoteOrigin])
+            }
         }
     }
+
     await git2.fetch(['--all'])
     await git2.pull(['--all'])
     git2 = null
+
     return data
 }
 
