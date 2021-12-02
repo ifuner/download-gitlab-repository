@@ -5,7 +5,7 @@ const workerpool = require('workerpool');
 const GitUrlParse = require("git-url-parse");
 const CONFIG = require("./config")
 
-const { DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
+const {DEFAULT_DIR, GITLAB_CLONE_MODE, GITLAB_USERNAME, GITLAB_PASSWORD} = CONFIG
 const cwd = process.cwd()
 const download = async function (data = {}) {
     const {path_with_namespace, ssh_url_to_repo, http_url_to_repo} = data || {}
@@ -13,9 +13,7 @@ const download = async function (data = {}) {
 
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
-    let git2 = simpleGit({
-        baseDir: proPath
-    });
+    let git2 = null
 
     if (!await fs.pathExists(proPath)) {
         // 创建文件夹
@@ -31,7 +29,9 @@ const download = async function (data = {}) {
         }
         // clone 代码
         await git.clone(remoteUrl, proPath)
-
+        git2 = simpleGit({
+            baseDir: proPath
+        });
         let branchs = await git2.branch(['-a'])
         branchs = branchs.all
         for (let i = 0; i < branchs.length; i++) {

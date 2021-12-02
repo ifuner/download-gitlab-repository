@@ -14,9 +14,7 @@ module.exports = async function (data = {}) {
 
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
-    const git2 = simpleGit({
-        baseDir: proPath
-    });
+    let git2 = null
 
     if (!await fs.pathExists(proPath)) {
         // 创建文件夹
@@ -31,6 +29,10 @@ module.exports = async function (data = {}) {
             remoteUrl = `${protocol}://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@${resource}${pathname}`
         }
         await git.clone(remoteUrl, proPath)
+
+        git2 = simpleGit({
+            baseDir: proPath
+        });
 
         let branchs = await git2.branch(['-a'])
         branchs = branchs.all
