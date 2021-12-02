@@ -14,8 +14,6 @@ module.exports = async function (data = {}) {
 
     let proPath = path.join(cwd, DEFAULT_DIR, path_with_namespace)
 
-    let git2 = null
-
     if (!await fs.pathExists(proPath)) {
         // 创建文件夹
         await fs.ensureDir(proPath)
@@ -30,7 +28,7 @@ module.exports = async function (data = {}) {
         }
         await git.clone(remoteUrl, proPath)
 
-        git2 = simpleGit({
+        let git2 = simpleGit({
             baseDir: proPath
         });
 
@@ -44,8 +42,15 @@ module.exports = async function (data = {}) {
                 await git2.branch(['--track', remoteOrigin])
             }
         }
+        git2 = null
     }
 
-    await git2.fetch(['--all'])
-    await git2.pull(['--all'])
+    let git3 = simpleGit({
+        baseDir: proPath
+    });
+    await git3.fetch(['--all'])
+    await git3.pull(['--all'])
+    git3 = null
+
+    return data
 }
