@@ -36,10 +36,11 @@ const getALLProjects = async function (resultData = [], defaultPage = 1) {
         const pageSize = +res.headers['x-per-page']
         const total = +res.headers['x-total']
         if (beforeData.length !== total && res.data.length) {
-            // console.log("page + 1", res);
             await getALLProjects(res.data, defaultPage + 1);
         }
-        beforeData.push(...res.data);
+        // 筛选出空的仓库
+        let filterResult = res.data.filter(item=>item.empty_repo!==true)
+        beforeData.push(...filterResult);
     }
 
     return beforeData

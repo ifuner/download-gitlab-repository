@@ -49,7 +49,7 @@ module.exports = async function (data = {}) {
         baseDir: proPath
     });
     await git3.fetch(['--all'])
-    await git3.pull(['--all'])
+    // await git3.pull(['--all'])
     git3 = null
 
     return data
